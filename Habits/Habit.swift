@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Habit: Codable {
     let name: String
@@ -55,3 +56,11 @@ extension Habit: Comparable {
         return lhs.name < rhs.name
     }
 }
+
+extension Color {
+    var uiColor: UIColor {
+        return UIColor(hue: CGFloat(hue), saturation: CGFloat(saturation), brightness: CGFloat(brightness), alpha: 1)
+    }
+}
+
+extension Color: Hashable { }

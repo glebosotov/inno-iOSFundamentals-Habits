@@ -263,6 +263,14 @@ class HomeCollectionViewController: UICollectionViewController {
                 cell.habitNameLabel.text = name
                 cell.secondaryLabel.text = secondaryUserRanking
                 cell.leaderLabel.text = leadingUserRanking
+                
+                cell.contentView.backgroundColor = favoriteColorHabit.withAlphaComponent(0.75)
+                cell.contentView.layer.cornerRadius = 8
+                cell.layer.shadowRadius = 3
+                cell.layer.shadowColor = UIColor.systemGray3.cgColor
+                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.layer.shadowOpacity = 1
+                cell.layer.masksToBounds = false
                 return cell
                 
             case .followedUser(let user, let message):
@@ -270,6 +278,11 @@ class HomeCollectionViewController: UICollectionViewController {
                 
                 cell.primaryTextLabel.text = user.name
                 cell.secondaryTextLabel.text = message
+                if indexPath.item == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+                    cell.separatorLineView.isHidden = true
+                } else {
+                    cell.separatorLineView.isHidden = false
+                }
                 return cell
             default:
                 return nil
@@ -335,36 +348,6 @@ class HomeCollectionViewController: UICollectionViewController {
     }
 
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
-        return cell
-    }
 
     // MARK: UICollectionViewDelegate
 

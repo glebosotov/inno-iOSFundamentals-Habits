@@ -88,10 +88,15 @@ class UserCollectionViewController: UICollectionViewController {
     func createDataSource() -> DataSourceType {
         let dataSource = DataSourceType(collectionView: collectionView) {
             (collectionView, indexPath, item) in
+            
+            var backgroundConfiguration = UIBackgroundConfiguration.clear()
+            backgroundConfiguration.backgroundColor = item.user.color?.uiColor ?? UIColor.systemGray4
+            backgroundConfiguration.cornerRadius = 8
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "User", for: indexPath) as! UICollectionViewListCell
             
             var content = cell.defaultContentConfiguration()
             content.text = item.user.name
+            cell.backgroundConfiguration = backgroundConfiguration
             content.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 11, leading: 8, bottom: 11, trailing: 8)
             content.textProperties.alignment = .center
             cell.contentConfiguration = content
@@ -105,6 +110,7 @@ class UserCollectionViewController: UICollectionViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.45))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)

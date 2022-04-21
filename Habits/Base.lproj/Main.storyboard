@@ -216,26 +216,37 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHn-U1-g4L">
-                                            <rect key="frame" x="32" y="45" width="342" height="75"/>
+                                            <rect key="frame" x="32" y="45" width="342" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9I1-2S-0SJ">
+                                            <rect key="frame" x="19" y="127" width="344" height="1"/>
+                                            <color key="backgroundColor" systemColor="labelColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="acr-Bn-o3g"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="9I1-2S-0SJ" firstAttribute="centerX" secondItem="DMj-KC-ufD" secondAttribute="centerX" id="Bpw-JM-tgx"/>
+                                        <constraint firstAttribute="bottom" secondItem="9I1-2S-0SJ" secondAttribute="bottom" id="FGN-Zw-UlQ"/>
                                         <constraint firstItem="UHn-U1-g4L" firstAttribute="top" secondItem="WRB-Ay-tCe" secondAttribute="bottom" constant="16" id="Fey-Gv-73g"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WRB-Ay-tCe" secondAttribute="trailing" constant="8" id="Izl-MY-Nys"/>
                                         <constraint firstItem="WRB-Ay-tCe" firstAttribute="top" secondItem="DMj-KC-ufD" secondAttribute="top" constant="8" id="LIi-ar-kId"/>
                                         <constraint firstAttribute="trailing" secondItem="UHn-U1-g4L" secondAttribute="trailing" constant="8" id="NrR-Sf-BTs"/>
                                         <constraint firstItem="WRB-Ay-tCe" firstAttribute="leading" secondItem="DMj-KC-ufD" secondAttribute="leading" constant="8" id="ecQ-17-Nze"/>
                                         <constraint firstItem="UHn-U1-g4L" firstAttribute="leading" secondItem="WRB-Ay-tCe" secondAttribute="leading" constant="24" id="m0F-mY-9Eo"/>
-                                        <constraint firstAttribute="bottom" secondItem="UHn-U1-g4L" secondAttribute="bottom" constant="8" id="zYx-37-6g5"/>
+                                        <constraint firstItem="9I1-2S-0SJ" firstAttribute="width" secondItem="DMj-KC-ufD" secondAttribute="width" multiplier="0.9" id="nYz-Ey-YH5"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="382" height="128"/>
                                 <connections>
                                     <outlet property="primaryTextLabel" destination="WRB-Ay-tCe" id="ssp-6r-yhr"/>
                                     <outlet property="secondaryTextLabel" destination="UHn-U1-g4L" id="0gp-eZ-XwO"/>
+                                    <outlet property="separatorLineHeightConstraint" destination="acr-Bn-o3g" id="XW0-dv-Frh"/>
+                                    <outlet property="separatorLineView" destination="9I1-2S-0SJ" id="iTF-6t-BHZ"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -489,6 +500,9 @@
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

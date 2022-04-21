@@ -10,7 +10,7 @@ import UIKit
 private let reuseIdentifier = "Cell"
 private let sectionHeaderKind = "SectionHeader"
 private let sectionHeaderIdentifier = "HeaderView"
-
+let favoriteColorHabit: UIColor = UIColor(hue: 0.15, saturation: 1, brightness: 0.9, alpha: 1)
 @MainActor
 class HabitCollectionViewController: UICollectionViewController {
     
@@ -25,11 +25,21 @@ class HabitCollectionViewController: UICollectionViewController {
         return HabitDetailViewController(coder: coder, habit: item)
     }
     
+    
+    
     enum ViewModel {
         enum Section: Hashable, Comparable {
             case favorites
             case category(_ category: Category)
             
+            var sectionColor: UIColor {
+                switch self {
+                case .favorites:
+                    return favoriteColorHabit
+                case .category(let category):
+                    return category.color.uiColor
+                }
+            }
             static func < (lhs: Section, rhs: Section) -> Bool {
                 switch (lhs, rhs) {
                 case (.category(let l), .category(let r)):
@@ -108,14 +118,53 @@ class HabitCollectionViewController: UICollectionViewController {
         dataSource.applySnaphotUsing(sectionIDs: sectionIDs, itemsBySection: itemsBySection)
     }
     
+    fileprivate func configureCell(_ cell: UICollectionViewListCell, _ item: HabitCollectionViewController.ViewModel.Item) {
+//        var content = cell.defaultContentConfiguration()
+//        content.text = item.name
+//        cell.contentConfiguration = content
+//
+//        var backgroundConfiguration = UIBackgroundConfiguration.clear()
+//        if Settings.shared.favoriteHabits.contains(item) {
+//            backgroundConfiguration.backgroundColor = favoriteColorHabit
+//        } else {
+//            backgroundConfiguration.backgroundColor = .systemGray6
+//        }
+//        backgroundConfiguration.cornerRadius = 8
+//        cell.backgroundConfiguration = backgroundConfiguration
+        
+        cell.configurationUpdateHandler = {
+            cell, state in
+            var content = UIListContentConfiguration.cell().updated(for: state)
+            content.text = item.name
+            content.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 11, leading: 8, bottom: 11, trailing: 8)
+            content.textProperties.alignment = .center
+            cell.contentConfiguration = content
+            
+            var backgroundConfiguration = UIBackgroundConfiguration.listPlainCell().updated(for: state)
+            if Settings.shared.favoriteHabits.contains(item) {
+                backgroundConfiguration.backgroundColor = favoriteColorHabit
+            } else {
+                backgroundConfiguration.backgroundColor = .systemGray6
+            }
+            if state.isHighlighted {
+                backgroundConfiguration.backgroundColorTransformer = .init { $0.withAlphaComponent(0.3) }
+            }
+            backgroundConfiguration.cornerRadius = 8
+            cell.backgroundConfiguration = backgroundConfiguration
+        }
+        cell.layer.shadowRadius = 3
+        cell.layer.shadowColor = UIColor.systemGray3.cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cell.layer.shadowOpacity = 1
+        cell.layer.masksToBounds = false
+    }
+    
     func createDataSource() -> DataSourceType {
         let dataSource = DataSourceType(collectionView: collectionView) {
             (collectionView, indexPath, item) in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Habit", for: indexPath) as! UICollectionViewListCell
             
-            var content = cell.defaultContentConfiguration()
-            content.text = item.name
-            cell.contentConfiguration = content
+            self.configureCell(cell, item)
             
             return cell
         }
@@ -130,6 +179,7 @@ class HabitCollectionViewController: UICollectionViewController {
             case .category(let category):
                 header.nameLabel.text = category.name
             }
+            header.backgroundColor = section.sectionColor
             
             return header
         }
@@ -140,6 +190,7 @@ class HabitCollectionViewController: UICollectionViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(44))
         
@@ -150,7 +201,7 @@ class HabitCollectionViewController: UICollectionViewController {
         sectionHeader.pinToVisibleBounds = true
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         section.boundarySupplementaryItems = [sectionHeader]
         
         return UICollectionViewCompositionalLayout(section: section)
